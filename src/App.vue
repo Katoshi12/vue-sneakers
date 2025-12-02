@@ -1,11 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Header from '@/components/Header.vue'
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+ <main
+   class="bg-white w-4/5 m-auto rounded-xl shadow-xl mt-15"
+ >
+   <Header/>
+ </main>
 </template>
 
 <style scoped></style>

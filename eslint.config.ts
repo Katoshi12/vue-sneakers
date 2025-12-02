@@ -60,6 +60,7 @@ export default defineConfigWithVueTs(
       // Vue
       'vue/no-unused-components': 'warn',
       'vue/no-useless-v-bind': 'warn',
+      'vue/multi-word-component-names': 'off'
     },
   },
 )
