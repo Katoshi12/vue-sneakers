@@ -1,8 +1,8 @@
 import { onMounted, reactive, ref, watch } from 'vue'
 
-import type { SneakerItem } from '@/types/item.ts'
+import type { SneakerItem } from '@/types/item'
+import { fetchSneakersApi } from '@/api/sneakers'
 
-const API_URL = 'https://b13eae266db1e8e5.mokky.dev/items'
 
 export function useSneakers() {
   const items = ref<SneakerItem[]>([])
@@ -14,32 +14,24 @@ export function useSneakers() {
     sortBy: 'name',
   })
 
-  const fetchSneakers = async () => {
-    try {
-      isLoading.value = true
-      errorMessage.value = null
+ const fetchSneakers = async () => {
+   try {
+     isLoading.value = true
+     errorMessage.value = null
 
-      const url = new URL(API_URL)
-
-      if (filters.sortBy) {
-        url.searchParams.set('sortBy', filters.sortBy)
-      }
-
-      if (filters.searchQuery) {
-        url.searchParams.set('title', filters.searchQuery)
-      }
-
-      const response = await fetch(url.toString())
-      const data = await response.json()
-
-      items.value = data as SneakerItem[]
-    } catch (error) {
-      console.error(error)
-      errorMessage.value = 'Не удалось загрузить список кроссовок'
-    } finally {
-      isLoading.value = false
-    }
-  }
+     items.value = await fetchSneakersApi({
+       sortBy: filters.sortBy,
+       title: filters.searchQuery,
+     })
+   }
+   catch (error) {
+     console.error(error)
+     errorMessage.value = 'Не удалось загрузить список кроссовок'
+   }
+   finally {
+     isLoading.value = false
+   }
+ }
 
   onMounted(fetchSneakers)
   watch(filters, fetchSneakers)
