@@ -1,7 +1,19 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
+
+import type { SneakerItem } from '@/types/item.ts'
 import Header from '@/components/Header.vue'
 import CardList from '@/components/Card/CardList.vue'
 
+const items = ref<SneakerItem[]>([])
+
+onMounted(() => {
+  fetch('https://b13eae266db1e8e5.mokky.dev/items')
+    .then(res => res.json())
+    .then(data => {
+      items.value = data as SneakerItem[]
+    })
+})
 </script>
 
 <template>

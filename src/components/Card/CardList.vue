@@ -1,20 +1,25 @@
 <script setup lang="ts">
 import Card from './Card.vue'
+import type { SneakerItem } from '@/types/item.ts'
+
+const { items } = defineProps<{ items: SneakerItem[] }>()
 
 const onClickAdd = () => {
-  alert('Добавить!')
+  // Логика добавления(чуть позже)
 }
 const onClickFavorite = () => {
-  alert('Добавлено в избранное!')
+  // Логика добавления(чуть позже)
 }
 </script>
 
 <template>
   <div class="grid grid-cols-4 gap-5">
     <Card
-      image-url="/sneakers/sneakers-1.jpg"
-      title="Мужские кроссовки Nike Blazer Mid Suede"
-      :price="5000"
+      v-for="item in items"
+      :key="item.id"
+      :image-url="item.imageUrl"
+      :title="item.title"
+      :price="item.price"
       :is-added="false"
       :is-favorite="false"
       :on-click-add="onClickAdd"
