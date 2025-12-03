@@ -1,14 +1,35 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 import Card from './Card.vue'
 import type { SneakerItem } from '@/types/item.ts'
+import { addFavoriteApi } from '@/api/favorites.ts'
 
 const { items } = defineProps<{ items: SneakerItem[] }>()
 
-const onClickAdd = () => {
-  // Логика добавления(чуть позже)
+const favorites = ref<number[]>([])
+
+const isItemFavorite = (itemId: number): boolean => {
+  return favorites.value.includes(itemId)
 }
-const onClickFavorite = () => {
-  // Логика добавления(чуть позже)
+
+const onClickAdd = () => {
+  // логика добавления в корзину
+}
+
+const onClickFavorite = async (item: SneakerItem) => {
+  const alreadyFavorite = isItemFavorite(item.id)
+
+  try {
+    if (!alreadyFavorite) {
+      await addFavoriteApi(item.id)
+      favorites.value.push(item.id)
+    } else {
+      favorites.value = favorites.value.filter(id => id !== item.id)
+    }
+  } catch (error) {
+    console.error('Не удалось обновить избранное', error)
+  }
 }
 </script>
 
@@ -21,9 +42,9 @@ const onClickFavorite = () => {
       :title="item.title"
       :price="item.price"
       :is-added="false"
-      :is-favorite="false"
-      :on-click-add="onClickAdd"
-      :on-click-favorite="onClickFavorite"
+      :is-favorite="isItemFavorite(item.id)"
+      :on-click-add="() => onClickAdd(item)"
+      :on-click-favorite="() => onClickFavorite(item)"
     />
   </div>
 </template>

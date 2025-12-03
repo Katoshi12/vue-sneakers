@@ -15,11 +15,11 @@ async function apiRequest<T>(path: string, options: RequestOptions = {}): Promis
 
   const queryString = params
     ? new URLSearchParams(
-      Object.entries(params).reduce<Record<string, string>>((acc, [key, value]) => {
-        acc[key] = String(value)
-        return acc
-      }, {}),
-    ).toString()
+        Object.entries(params).reduce<Record<string, string>>((acc, [key, value]) => {
+          acc[key] = String(value)
+          return acc
+        }, {}),
+      ).toString()
     : ''
 
   const url = queryString ? `${BASE_URL}${path}?${queryString}` : `${BASE_URL}${path}`
