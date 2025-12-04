@@ -3,7 +3,7 @@ import Header from '@/components/Header.vue'
 import CardList from '@/components/Card/CardList.vue'
 import { useSneakers } from '@/composable/useSneakers.ts'
 
-const { items, filters } = useSneakers()
+const { items, filters, toggleFavorite } = useSneakers()
 </script>
 
 <template>
@@ -37,7 +37,7 @@ const { items, filters } = useSneakers()
       </div>
 
       <div class="mt-10">
-        <CardList :items="items" />
+        <CardList :items="items" :on-click-favorite="toggleFavorite" />
       </div>
     </section>
   </main>

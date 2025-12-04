@@ -11,7 +11,7 @@ interface RequestOptions {
 }
 
 async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { method, params, body } = options
+  const { method = 'GET', params, body } = options
 
   const queryString = params
     ? new URLSearchParams(
@@ -32,9 +32,21 @@ async function apiRequest<T>(path: string, options: RequestOptions = {}): Promis
     body: body ? JSON.stringify(body) : undefined,
   })
 
-  if (!response.ok) throw new Error(`Request failed with status ${response.status}`)
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`)
+  }
 
-  return (await response.json()) as T
+  if (response.status === 204) {
+    return undefined as T
+  }
+
+  const text = await response.text()
+
+  if (!text) {
+    return undefined as T
+  }
+
+  return JSON.parse(text) as T
 }
 
 export { apiRequest }

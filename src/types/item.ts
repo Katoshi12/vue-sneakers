@@ -3,4 +3,7 @@ export interface SneakerItem {
   title: string
   price: number
   imageUrl: string
+
+  isFavorite?: boolean
+  favoriteId?: number | null
 }
